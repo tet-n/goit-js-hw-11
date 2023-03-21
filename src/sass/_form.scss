@@ -1,5 +1,40 @@
 .search-form {
   width: 100%;
 
-  padding: 15px 0;
+  padding: 1.5rem 0;
+  z-index: 1;
+  background-color: #292929;
+  margin: 0 auto;
+}
+
+.search-form .fixed {
+  position: fixed;
+  top: 0;
+
+  right: 0;
+}
+
+.form__wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+input[type='text'] {
+  height: 32px;
+
+  font-size: 1.4rem;
+  // outline: none;
+}
+
+button[type='submit'] {
+  padding: 0.1rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
 }

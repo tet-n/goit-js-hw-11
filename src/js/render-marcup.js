@@ -1,4 +1,5 @@
 import { containerEl } from './references';
+const logo = new URL('../images/icons.svg', import.meta.url);
 
 export function renderMarcup(imageArray) {
   const images = imageArray
@@ -18,23 +19,25 @@ export function renderMarcup(imageArray) {
     </div>
     <div class="info">
       <p class="info-item">
-      <svg class="card__icon" width="15" height="15">
-  <use href="./images/icons.svg#like"></use>
+      <svg class="card__icon" width="22" height="22">
+  <use href="${logo}#like"></use>
 </svg>
-      <i class="fa-solid fa-heart" "></i>
-        <b>Likes</b>${likes}
+${likes}
       </p>
       <p class="info-item">
-      <i class="fa-solid fa-eye" "></i>
-        <b>Views</b>${views}
+      <svg class="card__icon" width="22" height="22">
+  <use href="${logo}#views"></use>
+</svg>${views}
       </p>
       <p class="info-item">
-      <i class="fa-solid fa-comment" "></i>
-        <b>Comments</b>${comments}
+      <svg class="card__icon" width="22" height="22">
+  <use href="${logo}#review"></use>
+</svg>${comments}
       </p>
       <p class="info-item">
-      <i class="fa-sharp fa-solid fa-circle-down" "></i>
-        <b>Downloads</b>${downloads}
+      <svg class="card__icon" width="22" height="22">
+      <use href="${logo}#downloads"></use>
+    </svg>${downloads}
       </p>
     </div>
   </div>`;
@@ -42,5 +45,5 @@ export function renderMarcup(imageArray) {
     )
     .join('');
 
-  containerEl.insertAdjacentHTML('afterbegin', images);
+  containerEl.insertAdjacentHTML('beforeend', images);
 }
