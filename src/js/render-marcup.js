@@ -1,5 +1,11 @@
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import { containerEl } from './references';
-const logo = new URL('../images/icons.svg', import.meta.url);
+
+// It is a path to svg
+const logoPath = new URL('../images/icons.svg', import.meta.url);
+
+const lightbox = new SimpleLightbox('.gallery a');
 
 export function renderMarcup(imageArray) {
   const images = imageArray
@@ -14,29 +20,29 @@ export function renderMarcup(imageArray) {
         largeImageURL,
       }) => {
         return `<div class="photo-card">
-        <div class="card-thumb">
-    <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+        <div class="card-thumb"><a href="${largeImageURL}">
+    <img src="${webformatURL}" alt="${tags}" loading="lazy" width="375" height="200"/></a>
     </div>
     <div class="info">
       <p class="info-item">
       <svg class="card__icon" width="22" height="22">
-  <use href="${logo}#like"></use>
+  <use href="${logoPath}#like"></use>
 </svg>
 ${likes}
       </p>
       <p class="info-item">
       <svg class="card__icon" width="22" height="22">
-  <use href="${logo}#views"></use>
+  <use href="${logoPath}#views"></use>
 </svg>${views}
       </p>
       <p class="info-item">
       <svg class="card__icon" width="22" height="22">
-  <use href="${logo}#review"></use>
+  <use href="${logoPath}#review"></use>
 </svg>${comments}
       </p>
       <p class="info-item">
       <svg class="card__icon" width="22" height="22">
-      <use href="${logo}#downloads"></use>
+      <use href="${logoPath}#downloads"></use>
     </svg>${downloads}
       </p>
     </div>
@@ -46,4 +52,5 @@ ${likes}
     .join('');
 
   containerEl.insertAdjacentHTML('beforeend', images);
+  lightbox.refresh();
 }

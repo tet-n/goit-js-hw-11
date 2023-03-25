@@ -3,9 +3,18 @@ html {
 }
 
 body {
+  padding-bottom: 2rem;
   font-family: sans-serif;
-  width: 100vw;
-  // margin: 0 auto;
   text-align: center;
   background-color: rgb(85, 85, 85);
+  // scrollbar-gutter: stable;
+  // scrollbar-width: none;
+}
+
+html.no-jump {
+  scrollbar-gutter: stable;
+}
+
+img {
+  max-width: 100%;
 }

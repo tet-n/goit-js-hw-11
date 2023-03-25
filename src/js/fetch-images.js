@@ -1,37 +1,41 @@
 import axios from 'axios';
-const BASE_URL = 'https://pixabay.com/api/';
-export let currentPage = 1;
+import { warningNotification } from './notifications';
 
-export async function fetchCountries(value) {
-  try {
-    const { data } = await axios({
-      method: 'get',
-      url: BASE_URL,
-      params: {
-        key: '14920021-2257a961c5f1892eae42399ba',
-        q: value,
-        image_type: 'photo',
-        orientation: 'horizontal',
-        safesearch: 'true',
-        page: currentPage,
-        per_page: 40,
-        safesearch: true,
-      },
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    incrementPage();
-    return data;
-  } catch (e) {
-    console.log(e);
+export class FetchphotosAPI {
+  #BASE_URL = 'https://pixabay.com/api/';
+  constructor() {
+    this.perPage = 40;
   }
-}
 
-export function incrementPage() {
-  return (currentPage += 1);
-}
+  page = 1;
+  searchQuery = '';
 
-export function resetPage() {
-  return (currentPage = 1);
+  async fetchPhotosByName() {
+    try {
+      const { data } = await axios({
+        method: 'get',
+        url: this.#BASE_URL,
+        params: {
+          key: '14920021-2257a961c5f1892eae42399ba',
+          q: this.searchQuery,
+          image_type: 'photo',
+          orientation: 'horizontal',
+          safesearch: 'true',
+          page: this.page,
+          per_page: this.perPage,
+          safesearch: true,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return data;
+    } catch (e) {
+      warningNotification(`Opps. Something went wrong here...${e.message}`);
+    }
+  }
+
+  incrementPage() {
+    return (this.page += 1);
+  }
 }

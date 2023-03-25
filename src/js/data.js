@@ -1,56 +1,90 @@
+import { formEl, containerEl, loadBtnEl } from './references';
+import { FetchphotosAPI } from './fetch-images';
 import {
-  formEl,
-  containerEl,
-  loadBtnEl,
-  notlifyInfoOptions,
-} from './references';
-import { fetchCountries, currentPage, resetPage } from './fetch-images';
+  warningNotification,
+  infoNotification,
+  successNotification,
+} from './notifications';
+
 import { renderMarcup } from './render-marcup';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+// Cтворюємо екземпляр класу
+const fetchPhotos = new FetchphotosAPI();
 
-formEl.addEventListener('submit', onFormSubmit);
-let seekedPhoto = '';
-let total = 0;
+// Отримуємо дані
+const getData = async function () {
+  try {
+    const { totalHits, hits } = await fetchPhotos.fetchPhotosByName();
+    // Якщо масив із фото пустий
+    if (!hits.length)
+      return infoNotification(
+        `Sorry, there are no images matching your search query. Please try again.`
+      );
+    // Якщо знайшли зображення
+    successNotification(`Hooray! We found ${totalHits} images for you.`);
+    renderMarcup(hits);
+    loadBtnEl.classList.remove('hidden');
 
-function onFormSubmit(e) {
+    if (fetchPhotos.page === Math.ceil(totalHits / fetchPhotos.perPage)) {
+      loadBtnEl.classList.add('hidden');
+      infoNotification(
+        "We're sorry, but you've reached the end of search results."
+      );
+      return;
+    }
+  } catch (e) {
+    warningNotification(`Opps. Something went wrong here...${e.message}`);
+  }
+};
+
+const onLoadImages = function (e) {
   e.preventDefault();
-
-  seekedPhoto = e.currentTarget.elements.searchQuery.value.trim().toLowerCase();
-  if (seekedPhoto === '') {
-    Notify.info(
-      'Sorry, there are no images matching your search query. Please try again.',
-      notlifyInfoOptions
-    );
+  loadBtnEl.classList.add('hidden');
+  // Очищення контейнера у разі нового запиту
+  containerEl.innerHTML = '';
+  // Записуємо значення з інпута в клас
+  fetchPhotos.searchQuery = e.currentTarget.elements.searchQuery.value
+    .trim()
+    .toLowerCase();
+  // Якщо не ввели жодних даних
+  if (fetchPhotos.searchQuery === '') {
+    warningNotification('Please enter a non-epty value');
     return;
   }
-  containerEl.innerHTML = '';
-  resetPage();
 
-  fetchCountries(seekedPhoto)
-    .then(data => {
-      renderMarcup(data.hits);
-      console.log(data.totalHits);
-      total += 40;
-    })
-    .catch(console.error);
-}
+  getData();
+};
 
-function onLoadMore() {
-  if (!seekedPhoto) return;
-  fetchCountries(seekedPhoto)
-    .then(data => {
-      renderMarcup(data.hits);
-      console.log(data.totalHits);
+// Завантаження більшої кількості фото за одним і тим самим запитом
+const onLoadMoreImages = async function () {
+  try {
+    fetchPhotos.incrementPage();
+    const { totalHits, hits } = await fetchPhotos.fetchPhotosByName();
 
-      if (total >= total.hits) {
-        Notify.info(
-          "We're sorry, but you've reached the end of search results."
-        );
-        return;
-      }
-      total += 40;
-    })
-    .catch(console.error);
-}
+    renderMarcup(hits);
+    const { height: cardHeight } = document
+      .querySelector('.gallery')
+      .firstElementChild.getBoundingClientRect();
 
-loadBtnEl.addEventListener('click', onLoadMore);
+    const galleryRowGap = parseInt(
+      window.getComputedStyle(containerEl).getPropertyValue('row-gap')
+    );
+
+    window.scrollBy({
+      top: cardHeight * 2 + galleryRowGap / 2,
+      behavior: 'smooth',
+    });
+    // Якщо кількість можливих сторінок для завантаження дорівнює значенню page, то ховаємо кнопку та виводимо оповіщення
+    if (fetchPhotos.page === Math.ceil(totalHits / fetchPhotos.perPage)) {
+      loadBtnEl.classList.add('hidden');
+      infoNotification(
+        "We're sorry, but you've reached the end of search results."
+      );
+      return;
+    }
+  } catch (e) {
+    warningNotification(`Opps. Something went wrong here...${e.message}`);
+  }
+};
+
+formEl.addEventListener('submit', onLoadImages);
+loadBtnEl.addEventListener('click', onLoadMoreImages);

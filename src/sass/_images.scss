@@ -5,6 +5,8 @@
   flex-wrap: wrap;
   column-gap: 3rem;
   row-gap: 5rem;
+
+  padding: 40px;
 }
 
 .photo-card {
@@ -61,12 +63,8 @@ svg {
 
 .card-thumb img {
   display: block;
-  width: 37.5rem;
-  height: 20rem;
+  // width: 37.5rem;
+  // height: 20rem;
   object-fit: cover;
   border-radius: 1rem 1rem 0 0;
-}
-
-.notiflix-notify-info {
-  border: 2px solid rgb(0, 130, 190);
 }

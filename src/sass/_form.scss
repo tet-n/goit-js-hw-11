@@ -4,7 +4,7 @@
   padding: 1.5rem 0;
   z-index: 1;
   background-color: #292929;
-  margin: 0 auto;
+  // margin: 0 auto;
 }
 
 .search-form .fixed {
@@ -15,26 +15,51 @@
 }
 
 .form__wrap {
+  margin: 0 auto;
   position: relative;
   display: flex;
   justify-content: center;
+  width: 50rem;
 }
 
 input[type='text'] {
-  height: 32px;
+  padding: 0 1.3rem;
+
+  height: 4rem;
+  width: 45rem;
 
   font-size: 1.4rem;
-  // outline: none;
+  outline: none;
+  border-radius: 0.5rem 0 0 0.5rem;
+  border: none;
+  &:focus {
+    outline: 1px solid rgb(251, 255, 0);
+    outline-offset: -1px;
+  }
 }
 
 button[type='submit'] {
-  padding: 0.1rem;
-  position: absolute;
+  height: 4rem;
+  width: 4rem;
+
+  // position: absolute;
   top: 0;
   right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
+  border-radius: 0 0.5rem 0.5rem 0;
   cursor: pointer;
+  background-color: rgb(238, 216, 20);
+  transition: background-color 0.3s ease-in;
+
+  &:hover,
+  &:focus {
+    background-color: rgb(251, 255, 0);
+  }
+}
+
+.form__icon {
+  fill: #292929;
 }
