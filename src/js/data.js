@@ -18,7 +18,6 @@ const getTarget = function (entries) {
 const fetchPhotos = new FetchphotosAPI();
 const myObserver = new IntersectionObserverClass(getTarget);
 
-// Завантаження більшої кількості фото за одним і тим самим запитом
 export const onLoadMoreImages = async function () {
   try {
     fetchPhotos.incrementPage();
@@ -29,9 +28,8 @@ export const onLoadMoreImages = async function () {
     myObserver.target = containerEl.lastElementChild;
     myObserver.observe(myObserver.target);
 
-    // Якщо кількість можливих сторінок для завантаження дорівнює значенню page, то ховаємо кнопку та виводимо оповіщення
     if (fetchPhotos.page === Math.ceil(totalHits / fetchPhotos.perPage)) {
-      myObserver.observe(myObserver.target);
+      myObserver.unobserve(myObserver.target);
       infoNotification(
         "We're sorry, but you've reached the end of search results."
       );
@@ -46,12 +44,12 @@ export const onLoadMoreImages = async function () {
 const loadImages = async function () {
   try {
     const { totalHits, hits } = await fetchPhotos.fetchPhotosByName();
-    // Якщо масив із фото пустий
+
     if (!hits.length)
       return infoNotification(
         `Sorry, there are no images matching your search query. Please try again.`
       );
-    // Якщо знайшли зображення
+
     successNotification(`Hooray! We found ${totalHits} images for you.`);
     renderMarcup(hits);
 
@@ -74,14 +72,10 @@ const loadImages = async function () {
 
 const onFormSubmit = function (e) {
   e.preventDefault();
-
-  // Очищення контейнера у разі нового запиту
   containerEl.innerHTML = '';
-  // Записуємо значення з інпута в клас
   fetchPhotos.searchQuery = e.currentTarget.elements.searchQuery.value
     .trim()
     .toLowerCase();
-  // Якщо не ввели жодних даних
   if (fetchPhotos.searchQuery === '') {
     warningNotification('Please enter a non-epty value');
     return;
@@ -91,4 +85,4 @@ const onFormSubmit = function (e) {
 };
 
 formEl.addEventListener('submit', onFormSubmit);
-loadBtnEl.addEventListener('click', onLoadMoreImages);
+// loadBtnEl.addEventListener('click', onLoadMoreImages);
