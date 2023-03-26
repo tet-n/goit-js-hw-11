@@ -6,7 +6,7 @@
   font-weight: 700;
 
   color: black;
-  background-color: rgb(238, 216, 20);
+  background-color: #eed814;
   border: none;
   border-radius: 0.4rem;
   cursor: pointer;
@@ -16,9 +16,10 @@
   &:focus {
     background-color: rgb(251, 255, 0);
     box-shadow: 0.2rem 0.2rem 0.4rem 0.1rem rgb(71, 71, 71);
+    color: rgba(1, 116, 26, 0.808);
   }
 }
 
-.load-more.hidden {
-  display: none;
-}
+// .load-more.hidden {
+//   display: none;
+// }
