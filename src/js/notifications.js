@@ -1,6 +1,6 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-function warningNotification(message) {
+function showWarningNotification(message) {
   Notify.failure(message, {
     position: 'center-center',
     failure: {
@@ -9,11 +9,11 @@ function warningNotification(message) {
   });
 }
 
-function infoNotification(message) {
+function showInfoNotification(message) {
   Notify.info(message);
 }
 
-function successNotification(message) {
+function showSuccessNotification(message) {
   Notify.success(message, {
     success: {
       background: '#eed814',
@@ -23,4 +23,8 @@ function successNotification(message) {
   });
 }
 
-export { warningNotification, infoNotification, successNotification };
+export {
+  showWarningNotification,
+  showInfoNotification,
+  showSuccessNotification,
+};

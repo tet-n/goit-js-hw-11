@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { warningNotification } from './notifications';
+import { showWarningNotification } from './notifications';
 
 export class FetchphotosAPI {
   #BASE_URL = 'https://pixabay.com/api/';
@@ -20,7 +20,6 @@ export class FetchphotosAPI {
           q: this.searchQuery,
           image_type: 'photo',
           orientation: 'horizontal',
-          safesearch: 'true',
           page: this.page,
           per_page: this.perPage,
           safesearch: true,
@@ -31,7 +30,7 @@ export class FetchphotosAPI {
       });
       return data;
     } catch (e) {
-      warningNotification(`Opps. Something went wrong here...${e.message}`);
+      showWarningNotification(`Opps. Something went wrong here...${e.message}`);
     }
   }
 
